@@ -71,6 +71,7 @@ title: reSolve Documentation
   - [Configuring Adapters](preparing-to-production.md#configuring-adapters)
   - [Using Environment Variables](preparing-to-production.md#using-environment-variables)
 
+- [Cheatsheet](cheatsheet.md)
 - [FAQ](faq.md)
 - [API Reference](api-reference.md)
 - [Troubleshooting](troubleshooting.md)
