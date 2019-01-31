@@ -207,7 +207,7 @@ export default async (req, res) => {
 
 ## Add Authentication
 
-Use ReSolve's built-in **[module](./advanced-techniques.md#modules)** (**resolve-module-auth**) to enable authentication in your application.
+Use reSolve's built-in **[module](./advanced-techniques.md#modules)** (**resolve-module-auth**) to enable authentication in your application.
 
 ##### run.js
 
@@ -302,9 +302,35 @@ export default appConfig
 
 ### Send Aggregate Commands
 
+```js
+$ curl -i http://localhost:3000/api/commands/ \
+--header "Content-Type: application/json" \
+--data '
+{
+    "aggregateName": "ShoppingList",
+    "aggregateId": "12345-new-shopping-list",
+    "type": "createShoppingList",
+    "payload": {
+        "name": "List 1"
+    }
+}
+'
+```
+
 ### Query a Read Model
 
+```js
+curl -X POST \
+-H "Content-Type: application/json" \
+-d "{\"page\":0, \"limit\":3}" \
+"http://localhost:3000/api/query/default/users"
+```
+
 ### Query a View Model
+
+```js
+curl -g -X GET "http://localhost:3000/api/query/Default/shoppingLists"
+```
 
 ---
 
