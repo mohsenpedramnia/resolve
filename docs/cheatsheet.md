@@ -286,7 +286,64 @@ export default appConfig
 
 ### Bind to a Read Model
 
+```js
+export const mapStateToOptions = () => ({
+  readModelName: 'ShoppingLists',
+  resolverName: 'all',
+  resolverArgs: {}
+})
+
+export const mapStateToProps = (state, ownProps) => ({
+  lists: ownProps.data
+})
+
+export const mapDispatchToProps = (dispatch, { aggregateActions }) =>
+  bindActionCreators(aggregateActions, dispatch)
+
+export default connectReadModel(mapStateToOptions)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(MyLists)
+)
+```
+
 ### Bind to a View Model
+
+```js
+export const mapStateToOptions = (state, ownProps) => {
+  const aggregateId = ownProps.match.params.id
+
+  return {
+    viewModelName: 'ShoppingList',
+    aggregateIds: [aggregateId]
+  }
+}
+
+export const mapStateToProps = (state, ownProps) => {
+  const aggregateId = ownProps.match.params.id
+
+  return {
+    aggregateId
+  }
+}
+
+export const mapDispatchToProps = (dispatch, { aggregateActions }) =>
+  bindActionCreators(
+    {
+      ...aggregateActions,
+      replaceUrl: routerActions.replace
+    },
+    dispatch
+  )
+
+export default connectViewModel(mapStateToOptions)(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ShoppingList)
+)
+```
 
 ### Support Optimistic UI Updates
 
@@ -294,7 +351,15 @@ export default appConfig
 
 ### Fix URL Paths
 
+```js
+export default connectRootBasedUrls(['href'])(Link)
+```
+
 ### Fix Static Resource Paths
+
+```js
+export default connectStaticBasedUrls(['css', 'favicon'])(Header)
+```
 
 ---
 
