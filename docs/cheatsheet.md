@@ -207,7 +207,64 @@ export default async (req, res) => {
 
 ## Add Authentication
 
----
+Use ReSolve's built-in **[module](./advanced-techniques.md#modules)** (**resolve-module-auth**) to enable authentication in your application.
+
+##### run.js
+
+```js
+// Initialize and merge the authentication module
+const moduleAuth = resolveModuleAuth([
+  {
+    name: 'local-strategy',
+    createStrategy: 'auth/create_strategy.js',
+    logoutRoute: {
+      path: 'logout',
+      method: 'POST'
+    },
+    routes: [
+      {
+        path: 'register',
+        method: 'POST',
+        callback: 'auth/route_register_callback.js'
+      },
+      {
+        path: 'login',
+        method: 'POST',
+        callback: 'auth/route_login_callback.js'
+      }
+    ]
+  }
+])
+
+const baseConfig = merge(
+  defaultResolveConfig,
+  appConfig,
+  moduleComments,
+  moduleAuth
+)
+```
+
+##### auth/create_strategy.js
+
+```js
+// Implement the authentication strategy constructor
+import { Strategy as StrategyFactory } from 'passport-local'
+
+const createStrategy = options => ({
+  factory: StrategyFactory,
+  options: {
+    failureRedirect: error =>
+      `/error?text=${encodeURIComponent(error.message)}`,
+    errorRedirect: error => `/error?text=${encodeURIComponent(error.message)}`,
+    usernameField: 'username',
+    passwordField: 'username',
+    successRedirect: null,
+    ...options
+  }
+})
+
+export default createStrategy
+```
 
 ## Serve Static Resources
 
