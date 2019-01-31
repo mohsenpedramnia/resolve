@@ -154,11 +154,42 @@ View models are special kind of read models. They are aggregate centric and can 
 
 ```js
 // Define the view model projection to build the resulting data sample
+import { SHOPPING_LIST_CREATED, SHOPPING_ITEM_CREATED } from '../eventTypes'
+
+export default {
+  Init: () => null,
+  [SHOPPING_LIST_CREATED]: (state, { aggregateId, payload: { name } }) => ({
+    id: aggregateId,
+    name,
+    list: []
+  }),
+  [SHOPPING_ITEM_CREATED]: (state, { payload: { id, text } }) => ({
+    ...state,
+    list: [
+      ...state.list,
+      {
+        id,
+        text,
+        checked: false
+      }
+    ]
+  })
+}
 ```
 
 ---
 
 ## Implement HTTP API Handlers
+
+You can implement HTTP API Handlers to handle HTTP requests.
+
+```js
+export default async (req, res) => {
+  const { id } = req.query
+  const user = await getUserById(id)
+  res.file(JSON.stringify(user), 'user.json')
+}
+```
 
 ---
 
@@ -179,6 +210,18 @@ View models are special kind of read models. They are aggregate centric and can 
 ---
 
 ## Serve Static Resources
+
+You can specify the static resource folder using the **staticDir** configuration option:
+
+##### config.app.js
+
+```js
+const appConfig = {
+  staticDir: 'static'
+  ...
+}
+export default appConfig
+```
 
 ---
 
