@@ -203,6 +203,16 @@ export default async (req, res) => {
 
 ## Use Modules
 
+##### run.js
+
+```js
+// Request a module and merge it with the application's config
+import { merge } from 'resolve-scripts'
+import createModuleComments from 'resolve-module-comments'
+
+merge(resolveConfig, createModuleComments())
+```
+
 ---
 
 ## Add Authentication
