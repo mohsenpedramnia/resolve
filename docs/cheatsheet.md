@@ -365,7 +365,7 @@ export default connectStaticBasedUrls(['css', 'favicon'])(Header)
 
 ## Use Standard HTTP API
 
-### Send Aggregate Commands
+### Send an Aggregate Command
 
 ```js
 $ curl -i http://localhost:3000/api/commands/ \
