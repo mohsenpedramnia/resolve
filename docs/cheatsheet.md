@@ -359,6 +359,29 @@ export default connectViewModel(mapStateToOptions)(
 
 ### Configure Routes
 
+```js
+import App from './containers/App'
+import ShoppingList from './containers/ShoppingList'
+import MyLists from './containers/MyLists'
+
+export default [
+  {
+    component: App,
+    routes: [
+      {
+        path: '/',
+        component: MyLists,
+        exact: true
+      },
+      {
+        path: '/:id',
+        component: ShoppingList
+      }
+    ]
+  }
+]
+```
+
 ### Fix URL Paths
 
 ```js
