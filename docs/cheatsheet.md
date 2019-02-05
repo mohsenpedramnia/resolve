@@ -357,6 +357,88 @@ export default connectViewModel(mapStateToOptions)(
 
 ### Support Optimistic UI Updates
 
+##### client/actions/optimistic_actions.js
+
+```js
+export const OPTIMISTIC_CREATE_SHOPPING_LIST = 'OPTIMISTIC_CREATE_SHOPPING_LIST'
+export const OPTIMISTIC_SYNC = 'OPTIMISTIC_SYNC'
+```
+
+##### client/reducers/optimistic_shopping_lists.js
+
+```js
+import { LOCATION_CHANGE } from 'react-router-redux'
+import {
+  OPTIMISTIC_CREATE_SHOPPING_LIST,
+  OPTIMISTIC_SYNC
+} from '../actions/optimistic_actions'
+
+const optimistic_shopping_lists = (state = [], action) => {
+  switch (action.type) {
+    case LOCATION_CHANGE: {
+      return []
+    }
+    case OPTIMISTIC_CREATE_SHOPPING_LIST: {
+      return [
+        ...state,
+        {
+          id: action.payload.id,
+          name: action.payload.name
+        }
+      ]
+    }
+    case OPTIMISTIC_SYNC: {
+      return action.payload.originalLists
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export default optimistic_shopping_lists
+```
+
+##### client/middlewares/optimistic_shopping_lists_middleware.js
+
+```js
+import { actionTypes } from 'resolve-redux'
+
+import {
+  OPTIMISTIC_CREATE_SHOPPING_LIST,
+  OPTIMISTIC_SYNC
+} from '../actions/optimistic_actions'
+
+const { SEND_COMMAND_SUCCESS, LOAD_READMODEL_STATE_SUCCESS } = actionTypes
+
+const optimistic_shopping_lists_middleware = store => next => action => {
+  if (
+    action.type === SEND_COMMAND_SUCCESS &&
+    action.commandType === 'createShoppingList'
+  ) {
+    store.dispatch({
+      type: OPTIMISTIC_CREATE_SHOPPING_LIST,
+      payload: {
+        id: action.aggregateId,
+        name: action.payload.name
+      }
+    })
+  }
+  if (action.type === LOAD_READMODEL_STATE_SUCCESS) {
+    store.dispatch({
+      type: OPTIMISTIC_SYNC,
+      payload: {
+        originalLists: action.result
+      }
+    })
+  }
+
+  next(action)
+}
+
+export default optimistic_shopping_lists_middleware
+```
+
 ### Configure Routes
 
 ```js
