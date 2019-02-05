@@ -436,6 +436,85 @@ curl -g -X GET "http://localhost:3000/api/query/Default/shoppingLists"
 
 ### Provide Separate Config for Production
 
-### Use Environment Variables
+##### config.prod.js
+
+```js
+const prodConfig = {
+  target: 'local',
+  port: 3000,
+  polyfills: ['@babel/polyfill'],
+  mode: 'production',
+  readModelAdapters: [
+    {
+      name: 'default',
+      module: 'resolve-readmodel-memory',
+      options: {}
+    }
+  ],
+  jwtCookie: {
+    name: 'jwt',
+    maxAge: 31536000000
+  }
+}
+
+export default prodConfig
+```
+
+##### run.js
+
+```js
+import {
+  build,
+  start,
+  merge,
+  ...
+} from 'resolve-scripts'
+
+import appConfig from './config.app'
+import prodConfig from './config.prod'
+
+const baseConfig = merge(
+   defaultResolveConfig,
+   appConfig,
+   ...
+)
+
+  switch (launchMode) {
+    ...
+    case 'build': {
+      await build(merge(baseConfig, prodConfig))
+      break
+    }
+    case 'start': {
+      await start(merge(baseConfig, prodConfig))
+      break
+    }
+  }
+  ...
+```
 
 ### Use Storage Adapters
+
+### Use Environment Variables
+
+```js
+import { declareRuntimeEnv } from 'resolve-scripts'
+export default {
+  readModels: [
+    {
+      name: 'myReadModel',
+      projection: 'common/read-models/myReadModel/projection.js',
+      resolvers: 'common/read-models/myReadModel/resolvers.js',
+      adapter: {
+        module: 'resolve-readmodel-mysql',
+        options: {
+          host: declareRuntimeEnv('SQL_HOST'),
+          database: declareRuntimeEnv('SQL_DATABASE'),
+          user: declareRuntimeEnv('SQL_USER'),
+          password: declareRuntimeEnv('SQL_PASSWORD')
+        }
+      }
+    }
+  ]
+}
+```
