@@ -150,7 +150,7 @@ export default {
 
 ### Implement a Reactive View Model
 
-View models are special kind of read models. They are aggregate centric and can reactively update the Redux state on the client.
+View models are a special kind of read models. They are aggregate centric and can reactively update the Redux state on the client.
 
 ```js
 // Define the view model projection to build the resulting data sample
@@ -181,8 +181,6 @@ export default {
 
 ## Implement HTTP API Handlers
 
-You can implement HTTP API Handlers to handle HTTP requests.
-
 ```js
 export default async (req, res) => {
   const { id } = req.query
@@ -197,7 +195,68 @@ export default async (req, res) => {
 
 ### Respond to Events
 
+```js
+const eventHandlers = {
+  UserCreationRequested: async (event, { resolve }) => {
+    const { aggregateId } = event
+    const createdUser = await resolve.executeQuery({
+      modelName: 'default',
+      resolverName: 'createdUser',
+      resolverArgs: { id: aggregateId }
+    })
+
+    if (!createdUser) {
+      return
+    }
+
+    const users = await resolve.executeQuery({
+      modelName: 'default',
+      resolverName: 'users',
+      resolverArgs: { id: aggregateId }
+    })
+
+    const userWithSameEmail = users.find(
+      user => user.email === createdUser.email
+    )
+
+    await resolve.executeCommand({
+      type: userWithSameEmail ? 'rejectUserCreation' : 'confirmUserCreation',
+      aggregateName: 'user',
+      payload: { createdUser },
+      aggregateId
+    })
+  }
+}
+
+export default eventHandlers
+```
+
 ### Run Code on Schedule
+
+```js
+const outdatedPeriod = 1000 * 60 * 10
+
+const cronHandlers = {
+  '0 */10 * * * *': async ({ resolve }) => {
+    const users = await resolve.executeQuery({
+      modelName: 'default',
+      resolverName: 'users'
+    })
+
+    const now = Date.now()
+
+    users.forEach(user => {
+      if (user.timestamp + outdatedPeriod < now) {
+        resolve.executeCommand({
+          type: 'deleteOutdatedUser',
+          aggregateName: 'user',
+          aggregateId: user.id
+        })
+      }
+    })
+  }
+}
+```
 
 ---
 
@@ -278,7 +337,7 @@ export default createStrategy
 
 ## Serve Static Resources
 
-You can specify the static resource folder using the **staticDir** configuration option:
+You can specify the static resource folder using the **staticDir** configuration option.
 
 ##### config.app.js
 
@@ -576,6 +635,21 @@ const baseConfig = merge(
 ```
 
 ### Use Storage Adapters
+
+##### config.prod.js
+
+```js
+// Use a MongoDB database to store Read Model state in production
+readModelAdapters: [
+  {
+    name: 'default',
+    module: 'resolve-readmodel-mongo',
+    options: {
+      url: 'mongodb://127.0.0.1:27017/MyDatabaseName'
+    }
+  }
+]
+```
 
 ### Use Environment Variables
 
