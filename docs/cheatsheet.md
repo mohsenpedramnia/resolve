@@ -7,11 +7,15 @@ title: Cheatsheet
 
 ### Default
 
+A new app is created based on the [Hello World](https://github.com/reimagined/resolve/tree/master/examples/hello-world) example project.
+
 ```sh
 yarn create resolve-app my-app
 ```
 
 ### From Example
+
+Use the `-e` option to create a new app based on one of the provided [example projects](introduction#examples).
 
 ```sh
 yarn create resolve-app -e hacker-news my-hacker-news-app
@@ -21,7 +25,9 @@ yarn create resolve-app -e hacker-news my-hacker-news-app
 
 ### Handle an Aggregate Command
 
-##### event_types.js
+Aggregate command handlers receive commands and emit events in response.
+
+##### event_types.js:
 
 ```js
 // Define an event type
@@ -56,6 +62,8 @@ export default {
 
 ### Maintain the Aggregate State
 
+Use aggregate projection to build the aggregate's state from previously emitted events. You can use this state in command handlers, for example to perform validation.
+
 ##### shopping-list.projection.js:
 
 ```js
@@ -73,6 +81,8 @@ export default {
 ```
 
 ### Register the Aggregate
+
+To let the application know about the aggregate, register its files in the `aggregates` configuration section.
 
 ##### config.app.js:
 
@@ -94,6 +104,8 @@ aggregates: [
 ### Implement a Read Model
 
 Read models build state from events and use this state to answer queries.
+
+##### shopping_lists.projection.js:
 
 ```js
 // Define the read model projection to build the state:
@@ -139,6 +151,8 @@ export default {
 }
 ```
 
+##### shopping_lists.resolvers.js:
+
 ```js
 // Define the resolver to answer queries:
 export default {
@@ -151,6 +165,8 @@ export default {
 ### Implement a Reactive View Model
 
 View models are a special kind of read models. They are aggregate centric and can reactively update the Redux state on the client.
+
+##### shopping_list.projection.js
 
 ```js
 // Define the view model projection to build the resulting data sample
@@ -180,6 +196,10 @@ export default {
 ---
 
 ## Implement HTTP API Handlers
+
+Use HTTP API handlers to to handler arbitrary HTTP requests.
+
+##### get_user.js
 
 ```js
 export default async (req, res) => {
