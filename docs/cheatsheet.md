@@ -62,7 +62,7 @@ export default {
 
 ### Maintain the Aggregate State
 
-Use aggregate projection to build the aggregate's state from previously emitted events. You can use this state in command handlers, for example to perform validation.
+Use an aggregate projection to build the aggregate's state from previously emitted events. You can use this state in command handlers, for example to perform validation.
 
 ##### shopping-list.projection.js:
 
@@ -213,7 +213,11 @@ export default async (req, res) => {
 
 ## Implement Sagas
 
+Uses sagas to implement long-lived processes. In reSolve, sagas can run code in response to events or on schedule.
+
 ### Respond to Events
+
+##### user-creation.event.js:
 
 ```js
 const eventHandlers = {
@@ -253,6 +257,8 @@ export default eventHandlers
 
 ### Run Code on Schedule
 
+##### user-creation.cron.js:
+
 ```js
 const outdatedPeriod = 1000 * 60 * 10
 
@@ -281,6 +287,8 @@ const cronHandlers = {
 ---
 
 ## Use Modules
+
+A module is essentially a slice of a configuration object that you can merge with an application's centralized config.
 
 ##### run.js
 
