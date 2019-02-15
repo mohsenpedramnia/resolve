@@ -648,17 +648,17 @@ const baseConfig = merge(
    ...
 )
 
-  switch (launchMode) {
-    ...
-    case 'build': {
-      await build(merge(baseConfig, prodConfig))
-      break
-    }
-    case 'start': {
-      await start(merge(baseConfig, prodConfig))
-      break
-    }
+switch (launchMode) {
+  ...
+  case 'build': {
+    await build(merge(baseConfig, prodConfig))
+    break
   }
+  case 'start': {
+    await start(merge(baseConfig, prodConfig))
+    break
+  }
+}
   ...
 ```
 
@@ -680,6 +680,8 @@ readModelAdapters: [
 ```
 
 ### Use Environment Variables
+
+##### config.prod.js
 
 ```js
 import { declareRuntimeEnv } from 'resolve-scripts'
