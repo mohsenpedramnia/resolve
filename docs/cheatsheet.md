@@ -197,7 +197,7 @@ export default {
 
 ## Implement HTTP API Handlers
 
-Use HTTP API handlers to to handler arbitrary HTTP requests.
+Use HTTP API handlers to handler arbitrary HTTP requests.
 
 ##### get_user.js
 
