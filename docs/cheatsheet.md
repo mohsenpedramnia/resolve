@@ -446,7 +446,7 @@ export default connectViewModel(mapStateToOptions)(
 
 ### Support Optimistic UI Updates
 
-Regular Read Models do not automatically synchronise teir state with bound React components. Implement the optimistic UI updating logic to enhance your application's responsiveness.
+Regular Read Models do not automatically synchronize their state with bound React components. Implement the optimistic UI updating logic to enhance your application's responsiveness.
 
 ##### client/actions/optimistic_actions.js
 
@@ -575,7 +575,7 @@ export default connectStaticBasedUrls(['css', 'favicon'])(Header)
 
 ## Use Standard HTTP API
 
-ReSolve provides an HTTP API that you can use to send commands to aggreagates, as well as to query Read Models and View Models.
+ReSolve provides an HTTP API that you can use to send commands to aggregates, as well as to query Read Models and View Models.
 
 ### Send an Aggregate Command
 
