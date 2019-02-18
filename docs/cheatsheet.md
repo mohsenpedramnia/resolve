@@ -381,6 +381,8 @@ export default appConfig
 
 ## Provide the Frontend
 
+Use the `connectReadModel` and `connectViewModel` React HOCs to obtain data from a reSolve backend. You can combine these HOCs with the react-redux `connect`.
+
 ### Bind to a Read Model
 
 ```js
@@ -443,6 +445,8 @@ export default connectViewModel(mapStateToOptions)(
 ```
 
 ### Support Optimistic UI Updates
+
+Regular Read Models do not automatically synchronise teir state with bound React components. Implement the optimistic UI updating logic to enhance your application's responsiveness.
 
 ##### client/actions/optimistic_actions.js
 
@@ -528,6 +532,10 @@ export default optimistic_shopping_lists_middleware
 
 ### Configure Routes
 
+ReSolve uses the [react-router-config](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config) library to provide a centralized route config that can be used on the client and for server-side rendering.
+
+##### routes.js:
+
 ```js
 import App from './containers/App'
 import ShoppingList from './containers/ShoppingList'
@@ -566,6 +574,8 @@ export default connectStaticBasedUrls(['css', 'favicon'])(Header)
 ---
 
 ## Use Standard HTTP API
+
+ReSolve provides an HTTP API that you can use to send commands to aggreagates, as well as to query Read Models and View Models.
 
 ### Send an Aggregate Command
 
