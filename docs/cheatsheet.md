@@ -164,7 +164,7 @@ export default {
 
 ### Implement a Reactive View Model
 
-View models are a special kind of read models. They are aggregate centric and can reactively update the Redux state on the client.
+View models are a special kind of read models. They are aggregate-centric and can reactively update the Redux state on the client.
 
 ##### shopping_list.projection.js
 
@@ -197,7 +197,7 @@ export default {
 
 ## Implement HTTP API Handlers
 
-Use HTTP API handlers to handler arbitrary HTTP requests.
+Use HTTP API handlers to handle arbitrary HTTP requests.
 
 ##### get_user.js
 
