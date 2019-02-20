@@ -613,11 +613,14 @@ curl -g -X GET "http://localhost:3000/api/query/Default/shoppingLists"
 
 ## Prepare to Production
 
+Before you move your application to production, make sure that it properly configured according to you production environment's specifics.
+
 ### Provide Separate Config for Production
 
 ##### config.prod.js
 
 ```js
+// Define a production config
 const prodConfig = {
   target: 'local',
   port: 3000,
@@ -642,6 +645,7 @@ export default prodConfig
 ##### run.js
 
 ```js
+ // Generate the final configuration object for the production environment
 import {
   build,
   start,
