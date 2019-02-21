@@ -575,7 +575,7 @@ export default connectStaticBasedUrls(['css', 'favicon'])(Header)
 
 ## Use Standard HTTP API
 
-ReSolve provides an HTTP API that you can use to send commands to aggregates, as well as to query Read Models and View Models.
+ReSolve provides an HTTP API that you can use to send commands to aggregates, as well as to query Read Models.
 
 ### Send an Aggregate Command
 
