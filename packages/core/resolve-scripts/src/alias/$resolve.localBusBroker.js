@@ -13,16 +13,16 @@ export default ({ resolveConfig, isClient }) => {
 
   return {
     code: `
-      import createStorageAdapter from '$resolve.storageAdapter'
+      import createEventStoreAdapter from '$resolve.eventStoreAdapter'
       import eventBrokerConfig from '$resolve.eventBroker'
       import createLocalBusBroker from 'resolve-local-event-broker'
 
       Promise.resolve().then(() => {
-        const storageAdapter = createStorageAdapter()
+        const eventStoreAdapter = createEventStoreAdapter()
 
         const localBusBroker = createLocalBusBroker({
           ...eventBrokerConfig,
-          storageAdapter
+          eventStoreAdapter
         })
 
         localBusBroker.run()

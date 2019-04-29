@@ -7,7 +7,7 @@ const createQuery = ({
   doUpdateRequest,
   readModels,
   viewModels,
-  storageAdapter
+  eventStoreAdapter
 }) => {
   const models = {}
   for (const readModel of readModels) {
@@ -28,7 +28,7 @@ const createQuery = ({
     models[viewModel.name] = wrapViewModel(
       viewModel,
       snapshotAdapter,
-      storageAdapter
+      eventStoreAdapter
     )
   }
 

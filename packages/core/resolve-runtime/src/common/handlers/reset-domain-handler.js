@@ -11,7 +11,7 @@ const resetDomainHandler = () => async (req, res) => {
   const {
     readModelConnectors,
     snapshotAdapter,
-    storageAdapter,
+    eventStoreAdapter,
     eventBroker: { reset: resetListener },
     readModels,
     viewModels,
@@ -32,7 +32,7 @@ const resetDomainHandler = () => async (req, res) => {
       req.query.hasOwnProperty('dropSagas') && req.query.dropSagas !== 'false'
 
     if (dropEventStore) {
-      await storageAdapter.drop()
+      await eventStoreAdapter.drop()
     }
 
     if (dropSnapshots) {

@@ -2,7 +2,7 @@ export default () => ({
   code: `
   import aggregateActions from '$resolve.aggregateActions'
   import seedClientEnvs from '$resolve.seedClientEnvs'
-  import storageAdapter from '$resolve.storageAdapter'
+  import eventStoreAdapter from '$resolve.eventStoreAdapter'
   import snapshotAdapter from '$resolve.snapshotAdapter'
   import readModelConnectors from '$resolve.readModelConnectors'
   import constants from '$resolve.constants'
@@ -18,7 +18,7 @@ export default () => ({
     assemblies: {
       aggregateActions,
       seedClientEnvs,
-      storageAdapter,
+      eventStoreAdapter,
       snapshotAdapter,
       readModelConnectors
     },

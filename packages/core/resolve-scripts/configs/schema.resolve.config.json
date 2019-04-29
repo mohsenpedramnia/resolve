@@ -403,7 +403,7 @@
             "$ref": "#/definitions/schedulerAdapter"
           }
         },
-        "storageAdapter": {
+        "eventStoreAdapter": {
           "$ref": "#/definitions/adapter"
         },
         "subscribeAdapter": {
@@ -445,7 +445,7 @@
         "readModels",
         "readModelConnectors",
         "schedulers",
-        "storageAdapter",
+        "eventStoreAdapter",
         "snapshotAdapter",
         "subscribeAdapter",
         "polyfills",

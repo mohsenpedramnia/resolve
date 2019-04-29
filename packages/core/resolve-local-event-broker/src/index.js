@@ -89,7 +89,7 @@ const followTopic = async (pool, listenerId) => {
     })
   }
 
-  await pool.storageAdapter.loadEvents(
+  await pool.eventStoreAdapter.loadEvents(
     { startTime: AbutTimestamp, maxEvents: pool.config.batchSize },
     async event => {
       if (event.timestamp === AbutTimestamp && currentSkipCount < SkipCount) {
@@ -285,7 +285,7 @@ const init = async pool => {
     !checkOptionShape(pool.config.zmqConsumerAddress, [String]) ||
     !checkOptionShape(pool.config.databaseFile, [String]) ||
     !checkOptionShape(pool.config.batchSize, [Number]) ||
-    !checkOptionShape(pool.config.storageAdapter, [Object])
+    !checkOptionShape(pool.config.eventStoreAdapter, [Object])
   ) {
     throw new Error(`
 			Local event broker configuration is malformed.
@@ -293,7 +293,7 @@ const init = async pool => {
         zmqBrokerAddress: "broker-ip-address:port",
         zmqConsumerAddress: "consumer-ip-address:port",
 				databaseFile: "path/to/database",
-				storageAdapter: <reSolve storageAdapter>
+				eventStoreAdapter: <reSolve eventStoreAdapter>
 			}
 		`)
   }
@@ -325,7 +325,7 @@ const init = async pool => {
     followTopicPromises: new Map(),
     acknowledgeMessages: new Map(),
     dropPromise: Promise.resolve(),
-    storageAdapter: pool.config.storageAdapter,
+    eventStoreAdapter: pool.config.eventStoreAdapter,
     workers: new Map(),
     xpubSocket,
     subSocket,
@@ -351,9 +351,9 @@ const dispose = async (pool, options = {}) => {
     throw new Error('Wrong options for dispose')
   }
 
-  const { xpubSocket, subSocket, meta, clientMap, storageAdapter } = pool
+  const { xpubSocket, subSocket, meta, clientMap, eventStoreAdapter } = pool
 
-  await storageAdapter.dispose()
+  await eventStoreAdapter.dispose()
   await meta.dispose(!!options.dropInfo)
 
   xpubSocket.unbindSync(pool.config.zmqBrokerAddress)

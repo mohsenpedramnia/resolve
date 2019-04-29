@@ -110,7 +110,7 @@ Follow these guidelines to help maintainers and the community understand your re
 | `Component: resolve-redux`      | Issues related to the [resolve-redux](https://github.com/reimagined/resolve/tree/master/packages/core/resolve-redux) package                |
 | `Component: resolve-scripts`    | Issues related to the [resolve-scripts](https://github.com/reimagined/resolve/tree/master/packages/core/resolve-scripts) package            |
 | `Component: resolve-command`    | Issues related to the [resolve-command](https://github.com/reimagined/resolve/tree/master/packages/core/resolve-command) package            |
-| `Component: storage-adapters`   | Issues related to [storage adapters](https://github.com/reimagined/resolve/tree/master/packages/adapters/storage-adapters) packages         |
+| `Component: eventstore-adapters`   | Issues related to [Eventstore adapters](https://github.com/reimagined/resolve/tree/master/packages/adapters/eventstore-adapters) packages         |
 | `Component: readmodel-adapters` | Issues related to [Read Model adapters](https://github.com/reimagined/resolve/tree/master/packages/adapters/readmodel-adapters) packages    |
 | `Component: bus-adapters`       | Issues related to the [bus adapters](https://github.com/reimagined/resolve/tree/master/packages/adapters/bus-adapters) packages             |
 | `Component: subscribe-adapters` | Issues related to the [subscribe adapters](https://github.com/reimagined/resolve/tree/master/packages/adapters/subscribe-adapters) packages |

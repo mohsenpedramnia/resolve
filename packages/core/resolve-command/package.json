@@ -28,7 +28,7 @@
     "@babel/runtime": "^7.0.0"
   },
   "devDependencies": {
-    "resolve-storage-lite": "0.20.1",
+    "resolve-eventstore-lite": "0.20.1",
     "jest": "24.1.0",
     "sinon": "7.2.2"
   },

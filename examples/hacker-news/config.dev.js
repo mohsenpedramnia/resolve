@@ -6,8 +6,8 @@ const devConfig = {
   redux: {
     enhancers: ['client/enhancers/redux-devtools.js']
   },
-  storageAdapter: {
-    module: 'resolve-storage-lite',
+  eventStoreAdapter: {
+    module: 'resolve-eventstore-lite',
     options: {
       databaseFile: 'event-store.db'
     }

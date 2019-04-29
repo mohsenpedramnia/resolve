@@ -3,13 +3,13 @@ import createQueryExecutor from 'resolve-query'
 
 const initResolve = async resolve => {
   const {
-    storageAdapter: createStorageAdapter,
+    eventStoreAdapter: createEventStoreAdapter,
     snapshotAdapter: createSnapshotAdapter,
     readModelConnectors: readModelConnectorsCreators
   } = resolve.assemblies
 
-  const baseStorageAdapter = createStorageAdapter()
-  const storageAdapter = Object.create(baseStorageAdapter, {
+  const baseStorageAdapter = createEventStoreAdapter()
+  const eventStoreAdapter = Object.create(baseStorageAdapter, {
     saveEvent: {
       value: async event => {
         await baseStorageAdapter.saveEvent(event)
@@ -35,13 +35,13 @@ const initResolve = async resolve => {
   }
 
   const executeCommand = createCommandExecutor({
-    storageAdapter,
+    eventStoreAdapter,
     aggregates,
     snapshotAdapter
   })
 
   const executeQuery = createQueryExecutor({
-    storageAdapter,
+    eventStoreAdapter,
     readModelConnectors,
     snapshotAdapter,
     doUpdateRequest: resolve.doUpdateRequest,
@@ -57,7 +57,7 @@ const initResolve = async resolve => {
   Object.defineProperties(resolve, {
     readModelConnectors: { value: readModelConnectors },
     snapshotAdapter: { value: snapshotAdapter },
-    storageAdapter: { value: storageAdapter }
+    eventStoreAdapter: { value: eventStoreAdapter }
   })
 }
 

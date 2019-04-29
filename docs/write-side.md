@@ -167,24 +167,24 @@ export default {
 
 ## Event Store
 
-All events returned by command handlers are saved to the event store. The reSolve framework uses one of the supported storage adapters to write events to the storage.
+All events returned by command handlers are saved to the event store. The reSolve framework uses one of the supported eventstore adapters to write events to the eventstore.
 
-You can specify the storage adapter in the **storageAdapter** config section:
+You can specify the eventstore adapter in the **eventStoreAdapter** config section:
 
 ```js
-storageAdapter: {
-  module: 'resolve-storage-lite',
+eventStoreAdapter: {
+  module: 'resolve-eventstore-lite',
   options: {
-    pathToFile = '../event-storage.db'
+    pathToFile = '../event-store.db'
   }
 }
 ```
 
-Adapters for the following storage types are available out of the box:
+Adapters for the following eventstore types are available out of the box:
 
-- [File or memory](https://github.com/reimagined/resolve/tree/master/packages/adapters/storage-adapters/resolve-storage-lite)
-- [MongoDB](https://github.com/reimagined/resolve/tree/master/packages/adapters/storage-adapters/resolve-storage-mongo)
-- [MySQL](https://github.com/reimagined/resolve/tree/master/packages/adapters/storage-adapters/resolve-storage-mysql)
+- [File or memory](https://github.com/reimagined/resolve/tree/master/packages/adapters/eventstore-adapters/resolve-eventstore-lite)
+- [MongoDB](https://github.com/reimagined/resolve/tree/master/packages/adapters/eventstore-adapters/resolve-eventstore-mongo)
+- [MySQL](https://github.com/reimagined/resolve/tree/master/packages/adapters/eventstore-adapters/resolve-eventstore-mysql)
 
-You can also add your own storage adapter to store events.
+You can also add your own eventstore adapter to store events.
 Refer to the [Adapters](advanced-techniques.md#adapters) section of the reSolve documentation for more information about adapters.

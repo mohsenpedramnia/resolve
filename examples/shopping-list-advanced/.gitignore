@@ -65,7 +65,7 @@ lib
 
 report.json
 
-event-storage.db
+event-store.db
 package-lock.json
 native/resolve
 yarn.lock

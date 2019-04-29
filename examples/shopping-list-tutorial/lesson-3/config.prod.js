@@ -7,10 +7,10 @@ const prodConfig = {
   staticPath: 'static',
   staticDir: 'static',
   distDir: 'dist',
-  storageAdapter: {
-    module: 'resolve-storage-lite',
+  eventStoreAdapter: {
+    module: 'resolve-eventstore-lite',
     options: {
-      databaseFile: 'event-storage.db'
+      databaseFile: 'event-store.db'
     }
   },
   subscribeAdapter: {

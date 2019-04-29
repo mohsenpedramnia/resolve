@@ -31,8 +31,8 @@
     "resolve-redux": "0.20.1",
     "resolve-scripts": "0.20.1",
     "resolve-runtime": "0.20.1",
-    "resolve-storage-dynamo": "0.20.1",
-    "resolve-storage-lite": "0.20.1",
+    "resolve-eventstore-dynamo": "0.20.1",
+    "resolve-eventstore-lite": "0.20.1",
     "resolve-subscribe-mqtt": "0.20.1",
     "resolve-subscribe-socket.io": "0.20.1",
     "uuid": "3.3.2"

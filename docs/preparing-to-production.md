@@ -40,25 +40,25 @@ export default prodConfig
 
 Before you move your app into production, specify all required [adapters](advanced-techniques.md#adapters) in the production config.
 
-Depending on your requirements, you may want to specify storage adapters for events, Read Model data and View Model snapshots.
+Depending on your requirements, you may want to specify eventstore adapters for events, Read Model data and View Model snapshots.
 
-The code below demonstrates how to set up a storage adapter on the example of an in-memory Read Model storage:
+The code below demonstrates how to set up a read model connector on the example of an in-memory Read Model storage:
 
 <!-- prettier-ignore-start -->
 
 [embedmd]:# (../examples/hacker-news/config.prod.js /readModelConnectors/ /\},/)
 ```js
 readModelConnectors: {
-    HackerNews: {
-      module: 'resolve-readmodel-lite',
-      options: {}
-    }
-  },
+  HackerNews: {
+    module: 'resolve-readmodel-lite',
+    options: {}
+  }
+},
 ```
 
 <!-- prettier-ignore-end -->
 
-In addition to storage adapters, you can specify adapters that define how your application communicates with underlying APIs. For example, use the API handler adapters, to define how your application handles API requests.
+In addition to eventstore adapters, you can specify adapters that define how your application communicates with underlying APIs. For example, use the API handler adapters, to define how your application handles API requests.
 You can also provide a bus adapter and subscribe adapter to define how your application sends events and subscribes to events.
 
 to familiarize yourself with the available adapters, see the **[adapters](https://github.com/reimagined/resolve/tree/master/packages/adapters)** package documentation.

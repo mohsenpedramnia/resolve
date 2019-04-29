@@ -4,7 +4,7 @@ const importApiHandler = () => async (req, res) => {
   }
 
   try {
-    await req.resolve.storageAdapter.saveEvent(JSON.parse(req.body))
+    await req.resolve.eventStoreAdapter.saveEvent(JSON.parse(req.body))
 
     await res.end('Ok')
   } catch (error) {

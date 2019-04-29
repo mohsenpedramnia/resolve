@@ -1,4 +1,4 @@
-import { decodeEvent } from 'resolve-storage-dynamo'
+import { decodeEvent } from 'resolve-eventstore-dynamo'
 
 const handleApplyEvents = async (lambdaEvent, resolve) => {
   const { events, listenerId } = lambdaEvent

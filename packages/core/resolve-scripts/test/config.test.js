@@ -10,13 +10,13 @@ describe('validate schema', () => {
     ).toBeTruthy()
   })
 
-  it('custom storage adapter', () => {
+  it('custom eventstore adapter', () => {
     expect(
       validateConfig({
         ...resolveConfigOrigin,
         target: 'local',
-        storageAdapter: {
-          module: 'resolve-storage-mongo',
+        eventStoreAdapter: {
+          module: 'resolve-eventstore-mongo',
           options: {
             collectionName: 'MyEvents'
           }
@@ -30,7 +30,7 @@ describe('validate schema', () => {
       validateConfig({
         ...resolveConfigOrigin,
         target: 'local',
-        storageAdapter: {
+        eventStoreAdapter: {
           module: 'resolve-bus-rabbitmq',
           options: {}
         }
@@ -146,12 +146,12 @@ describe('validate schema', () => {
 })
 
 describe('validate schema (fail)', () => {
-  it('incorrect storage adapter', () => {
+  it('incorrect eventstore adapter', () => {
     expect(() =>
       validateConfig({
         ...resolveConfigOrigin,
         target: 'local',
-        storageAdapter: {
+        eventStoreAdapter: {
           module: 123,
           options: {
             collectionName: 'MyEvents'
@@ -166,7 +166,7 @@ describe('validate schema (fail)', () => {
       validateConfig({
         ...resolveConfigOrigin,
         target: 'local',
-        storageAdapter: {
+        eventStoreAdapter: {
           module: 123,
           options: {}
         }

@@ -58,15 +58,15 @@ const devConfig = {
         bucketSize: 100
       }
     }
-  */ storageAdapter: {
-    module: 'resolve-storage-lite',
+  */ eventStoreAdapter: {
+    module: 'resolve-eventstore-lite',
     options: {
-      pathToFile: 'event-storage.db'
+      pathToFile: 'event-store.db'
     }
   },
   /*
     {
-      module: 'resolve-storage-mongo',
+      module: 'resolve-eventstore-mongo',
       options: {
         url: 'mongodb://127.0.0.1:27017/MyDatabaseName',
         collectionName: 'Events'
@@ -75,7 +75,7 @@ const devConfig = {
   */
   /*
     {
-      module: 'resolve-storage-mysql',
+      module: 'resolve-eventstore-mysql',
       options: {
         host: 'localhost',
         port: 3306,

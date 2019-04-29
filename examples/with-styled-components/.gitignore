@@ -61,5 +61,5 @@ typings/
 
 dist
 
-event-storage.db
+event-store.db
 package-lock.json

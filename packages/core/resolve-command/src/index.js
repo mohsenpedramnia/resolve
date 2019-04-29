@@ -48,7 +48,7 @@ const verifyEvent = event => {
 const getAggregateState = async (
   { projection, serializeState, deserializeState, invariantHash = null },
   aggregateId,
-  storageAdapter,
+  eventStoreAdapter,
   snapshotAdapter = null
 ) => {
   const snapshotKey =
@@ -111,7 +111,7 @@ const getAggregateState = async (
     })
   }
 
-  await storageAdapter.loadEvents(
+  await eventStoreAdapter.loadEvents(
     {
       aggregateIds: [aggregateId],
       startTime: lastTimestamp,
@@ -128,7 +128,7 @@ const getAggregateState = async (
 const executeCommand = async (
   command,
   aggregate,
-  storageAdapter,
+  eventStoreAdapter,
   jwtToken,
   snapshotAdapter
 ) => {
@@ -140,7 +140,7 @@ const executeCommand = async (
   } = await getAggregateState(
     aggregate,
     aggregateId,
-    storageAdapter,
+    eventStoreAdapter,
     snapshotAdapter
   )
 
@@ -169,26 +169,26 @@ const executeCommand = async (
   return event
 }
 
-function createExecutor({ storageAdapter, aggregate, snapshotAdapter }) {
+function createExecutor({ eventStoreAdapter, aggregate, snapshotAdapter }) {
   return async (command, jwtToken) => {
     const event = await executeCommand(
       command,
       aggregate,
-      storageAdapter,
+      eventStoreAdapter,
       jwtToken,
       snapshotAdapter
     )
 
-    await storageAdapter.saveEvent(event)
+    await eventStoreAdapter.saveEvent(event)
 
     return event
   }
 }
 
-export default ({ storageAdapter, aggregates, snapshotAdapter }) => {
+export default ({ eventStoreAdapter, aggregates, snapshotAdapter }) => {
   const executors = aggregates.reduce((result, aggregate) => {
     result[aggregate.name] = createExecutor({
-      storageAdapter,
+      eventStoreAdapter,
       aggregate,
       snapshotAdapter
     })

@@ -3,7 +3,7 @@ const disposeResolve = async resolve => {
     await resolve.executeCommand.dispose()
     await resolve.executeQuery.dispose()
 
-    await resolve.storageAdapter.dispose()
+    await resolve.eventStoreAdapter.dispose()
     await resolve.snapshotAdapter.dispose()
 
     for (const name of Object.keys(resolve.readModelConnectors)) {

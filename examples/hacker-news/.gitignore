@@ -61,7 +61,7 @@ dist
 
 package-lock.json
 
-event-storage.db
+event-store.db
 snapshot.db
 code.zip
 static.zip

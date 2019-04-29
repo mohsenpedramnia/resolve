@@ -9,8 +9,8 @@ export default {
     module: 'resolve-subscribe-mqtt',
     options: {}
   },
-  storageAdapter: {
-    module: 'resolve-storage-dynamo',
+  eventStoreAdapter: {
+    module: 'resolve-eventstore-dynamo',
     options: {
       tableName: declareRuntimeEnv('RESOLVE_EVENT_STORE_TABLE'),
       skipInit: true

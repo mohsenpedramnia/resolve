@@ -2,7 +2,7 @@
 
 exports[`base config works correctly [server] 1`] = `
 "
-import storageAdapter_constructor from \\"<MONOREPO_DIR>/core/resolve-scripts/test/alias/files/testAdapter.js\\"
+import eventStoreAdapter_constructor from \\"<MONOREPO_DIR>/core/resolve-scripts/test/alias/files/testAdapter.js\\"
 const constructorBindFunction =
     (
       constructorFunction,
@@ -15,18 +15,18 @@ const constructorBindFunction =
       { ...compileTimeImports, ...runTimeImports }
     )
 const idempotentFunction = value => value
-const storageAdapter_imports = {  }
-const storageAdapter_options = {
+const eventStoreAdapter_imports = {  }
+const eventStoreAdapter_options = {
   \\"url\\": \\"http://test.test\\"
 }
-const storageAdapter = constructorBindFunction.bind(null,
-      storageAdapter_constructor,
-      storageAdapter_options,
-      storageAdapter_imports
+const eventStoreAdapter = constructorBindFunction.bind(null,
+      eventStoreAdapter_constructor,
+      eventStoreAdapter_options,
+      eventStoreAdapter_imports
     )
-    Object.assign(storageAdapter, storageAdapter_constructor)
+    Object.assign(eventStoreAdapter, eventStoreAdapter_constructor)
     
-export default storageAdapter
+export default eventStoreAdapter
 "
 `;
 
@@ -45,20 +45,20 @@ const constructorBindFunction =
       { ...compileTimeImports, ...runTimeImports }
     )
 const idempotentFunction = value => value
-const storageAdapter_constructor = ((moduleOrFile) => {
+const eventStoreAdapter_constructor = ((moduleOrFile) => {
   return interopRequireDefault(__non_webpack_require__(moduleOrFile)).default
 })(process.env[\\"STORAGE_ADAPTER\\"])
-const storageAdapter_imports = {  }
-const storageAdapter_options = {
+const eventStoreAdapter_imports = {  }
+const eventStoreAdapter_options = {
   \\"url\\": process.env[\\"STORAGE_OPTIONS_URL\\"]
 }
-const storageAdapter = constructorBindFunction.bind(null,
-      storageAdapter_constructor,
-      storageAdapter_options,
-      storageAdapter_imports
+const eventStoreAdapter = constructorBindFunction.bind(null,
+      eventStoreAdapter_constructor,
+      eventStoreAdapter_options,
+      eventStoreAdapter_imports
     )
-    Object.assign(storageAdapter, storageAdapter_constructor)
+    Object.assign(eventStoreAdapter, eventStoreAdapter_constructor)
     
-export default storageAdapter
+export default eventStoreAdapter
 "
 `;

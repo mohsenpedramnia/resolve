@@ -1,4 +1,4 @@
-import { ConcurrentError } from 'resolve-storage-base'
+import { ConcurrentError } from 'resolve-eventstore-base'
 import { CommandError } from 'resolve-command'
 
 import extractErrorHttpCode from '../utils/extract-error-http-code'

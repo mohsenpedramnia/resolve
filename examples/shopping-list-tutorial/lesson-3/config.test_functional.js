@@ -7,8 +7,8 @@ const testFunctionalConfig = {
   staticPath: 'static',
   staticDir: 'static',
   distDir: 'dist',
-  storageAdapter: {
-    module: 'resolve-storage-lite',
+  eventStoreAdapter: {
+    module: 'resolve-eventstore-lite',
     options: {
       databaseFile: 'event-store-test-functional.db'
     }

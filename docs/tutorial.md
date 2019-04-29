@@ -107,7 +107,7 @@ A command handler returns an event object. This object should contain the follow
 - **type** - specifies the event's type;
 - **payload** - specifies data associated with the event.
 
-In the example code, the event payload contains the same fields that were obtained from the command payloads. The reSolve framework saves events that command handlers return to a persistent **[event store](write-side.md#event-store)**. Your application is already configured to use a file-based event store. We suggest that you keep this configuration throughout the tutorial. For information on how to use other storage types see the following documentation topics:
+In the example code, the event payload contains the same fields that were obtained from the command payloads. The reSolve framework saves events that command handlers return to a persistent **[event store](write-side.md#event-store)**. Your application is already configured to use a file-based event store. We suggest that you keep this configuration throughout the tutorial. For information on how to use other eventstore types see the following documentation topics:
 
 - [Adapters](https://github.com/reimagined/resolve/blob/master/docs/advanced-techniques.md#adapters)
 - [Configuring Adapters](https://github.com/reimagined/resolve/blob/master/docs/preparing-to-production.md#configuring-adapters)
@@ -205,7 +205,7 @@ Content-Length: 146
 
 ```
 
-You can now check the event store file to see the newly created event. Open the **event-storage.db** file and locate the created event objects:
+You can now check the event store file to see the newly created event. Open the **event-store.db** file and locate the created event objects:
 
 <!-- prettier-ignore-start -->
 

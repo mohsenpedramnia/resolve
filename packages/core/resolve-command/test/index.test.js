@@ -1,6 +1,6 @@
 import sinon from 'sinon'
 
-import createStorageAdapter from 'resolve-storage-lite'
+import createEventStoreAdapter from 'resolve-eventstore-lite'
 import createCommandExecutor from '../src'
 import { CommandError } from '../src'
 
@@ -9,7 +9,7 @@ describe('resolve-command', () => {
   const AGGREGATE_NAME = 'aggregateName'
   const brokenStateError = new Error('Broken Error')
 
-  let lastState, storageAdapter, aggregateVersion, aggregates
+  let lastState, eventStoreAdapter, aggregateVersion, aggregates
 
   const initEvents = async events => {
     for (const rawEvent of events) {
@@ -28,7 +28,7 @@ describe('resolve-command', () => {
         event.timestamp = 1000
       }
 
-      await storageAdapter.saveEvent(event)
+      await eventStoreAdapter.saveEvent(event)
     }
   }
 
@@ -66,18 +66,21 @@ describe('resolve-command', () => {
       }
     ]
 
-    storageAdapter = createStorageAdapter({ databaseFile: ':memory:' })
+    eventStoreAdapter = createEventStoreAdapter({ databaseFile: ':memory:' })
   })
 
   afterEach(() => {
     aggregateVersion = null
     aggregates = null
     lastState = null
-    storageAdapter = null
+    eventStoreAdapter = null
   })
 
   it('should success build aggregate state from empty event list and execute cmd', async () => {
-    const executeCommand = createCommandExecutor({ storageAdapter, aggregates })
+    const executeCommand = createCommandExecutor({
+      eventStoreAdapter,
+      aggregates
+    })
 
     const event = await executeCommand({
       aggregateName: AGGREGATE_NAME,
@@ -92,7 +95,10 @@ describe('resolve-command', () => {
   it('should success build aggregate state and execute command', async () => {
     await initEvents([{ type: 'SuccessEvent', aggregateVersion: 1 }])
 
-    const executeCommand = createCommandExecutor({ storageAdapter, aggregates })
+    const executeCommand = createCommandExecutor({
+      eventStoreAdapter,
+      aggregates
+    })
 
     const event = await executeCommand({
       aggregateName: AGGREGATE_NAME,
@@ -110,7 +116,10 @@ describe('resolve-command', () => {
   it('should handle rejection on case of failure on building aggregate state', async () => {
     await initEvents([{ type: 'BrokenEvent', aggregateVersion: 1 }])
 
-    const executeCommand = createCommandExecutor({ storageAdapter, aggregates })
+    const executeCommand = createCommandExecutor({
+      eventStoreAdapter,
+      aggregates
+    })
 
     try {
       await executeCommand({
@@ -129,7 +138,7 @@ describe('resolve-command', () => {
     const aggregate = { ...aggregates[0] }
 
     const executeCommand = createCommandExecutor({
-      storageAdapter,
+      eventStoreAdapter,
       aggregates: [aggregate]
     })
 
@@ -145,7 +154,10 @@ describe('resolve-command', () => {
   it('should reject event with type absence', async () => {
     await initEvents([{ type: 'SuccessEvent', aggregateVersion: 1 }])
 
-    const executeCommand = createCommandExecutor({ storageAdapter, aggregates })
+    const executeCommand = createCommandExecutor({
+      eventStoreAdapter,
+      aggregates
+    })
 
     try {
       await executeCommand({
@@ -161,7 +173,10 @@ describe('resolve-command', () => {
   })
 
   it('should reject command with aggregateId absence', async () => {
-    const executeCommand = createCommandExecutor({ storageAdapter, aggregates })
+    const executeCommand = createCommandExecutor({
+      eventStoreAdapter,
+      aggregates
+    })
 
     try {
       await executeCommand({
@@ -176,7 +191,10 @@ describe('resolve-command', () => {
   })
 
   it('should reject command with aggregateName absence', async () => {
-    const executeCommand = createCommandExecutor({ storageAdapter, aggregates })
+    const executeCommand = createCommandExecutor({
+      eventStoreAdapter,
+      aggregates
+    })
 
     try {
       await executeCommand({
@@ -191,7 +209,10 @@ describe('resolve-command', () => {
   })
 
   it('should reject command with type absence', async () => {
-    const executeCommand = createCommandExecutor({ storageAdapter, aggregates })
+    const executeCommand = createCommandExecutor({
+      eventStoreAdapter,
+      aggregates
+    })
 
     try {
       await executeCommand({
@@ -215,7 +236,10 @@ describe('resolve-command', () => {
       .stub()
       .callsFake(aggregate.commands.emptyCommand)
 
-    const executeCommand = createCommandExecutor({ storageAdapter, aggregates })
+    const executeCommand = createCommandExecutor({
+      eventStoreAdapter,
+      aggregates
+    })
 
     const jwtToken = 'JWT-TOKEN'
     await executeCommand({
@@ -254,7 +278,10 @@ describe('resolve-command', () => {
       }
     ])
 
-    const executeCommand = createCommandExecutor({ storageAdapter, aggregates })
+    const executeCommand = createCommandExecutor({
+      eventStoreAdapter,
+      aggregates
+    })
 
     const jwtToken = 'JWT-TOKEN'
     try {
@@ -275,7 +302,10 @@ describe('resolve-command', () => {
   })
 
   it('Regression test. Incorrect command type', async () => {
-    const executeCommand = createCommandExecutor({ storageAdapter, aggregates })
+    const executeCommand = createCommandExecutor({
+      eventStoreAdapter,
+      aggregates
+    })
 
     const jwtToken = 'JWT-TOKEN'
     try {

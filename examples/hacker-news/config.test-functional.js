@@ -32,8 +32,8 @@ const testFunctionalConfig = {
     name: 'jwt',
     maxAge: 31536000000
   },
-  storageAdapter: {
-    module: 'resolve-storage-lite',
+  eventStoreAdapter: {
+    module: 'resolve-eventstore-lite',
     options: {
       databaseFile: 'event-store-test-functional.db'
     }

@@ -30,7 +30,7 @@
     "sinon": "7.2.2",
     "resolve-query": "0.20.1",
     "resolve-readmodel-lite": "0.20.1",
-    "resolve-storage-lite": "0.20.1"
+    "resolve-eventstore-lite": "0.20.1"
   },
   "babelCompile": [
     {

@@ -11,8 +11,8 @@ const testFunctionalConfig = {
       }
     }
   },*/
-  storageAdapter: {
-    module: 'resolve-storage-lite',
+  eventStoreAdapter: {
+    module: 'resolve-eventstore-lite',
     options: {
       databaseFile: 'event-store-test-functional.db'
     }

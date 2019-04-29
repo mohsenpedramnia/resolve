@@ -1,12 +1,12 @@
 import path from 'path'
 import declareRuntimeEnv from '../../src/declare_runtime_env'
 
-import alias from '../../src/alias/$resolve.storageAdapter'
+import alias from '../../src/alias/$resolve.eventStoreAdapter'
 import normalizePaths from './normalize_paths'
 
 describe('base config works correctly', () => {
   const resolveConfig = {
-    storageAdapter: {
+    eventStoreAdapter: {
       module: path.resolve(__dirname, 'files/testAdapter.js'),
       options: {
         url: 'http://test.test'
@@ -43,7 +43,7 @@ describe('base config works correctly', () => {
 
 test('config with process.env works correctly', () => {
   const resolveConfig = {
-    storageAdapter: {
+    eventStoreAdapter: {
       module: declareRuntimeEnv('STORAGE_ADAPTER'),
       options: {
         url: declareRuntimeEnv('STORAGE_OPTIONS_URL')

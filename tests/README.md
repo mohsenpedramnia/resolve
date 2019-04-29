@@ -143,12 +143,12 @@ const resolvers = {
 
   getStoriesWithRangedVersion: async (
     store,
-    { minVersion, maxVersion, openRange = false }
+    { minVersion, maxVersion, closedInterval = false }
   ) => {
     return await store.find('Stories', {
       $and: [
-        { version: { [openRange ? '$gte' : '$gt']: minVersion } },
-        { version: { [openRange ? '$lte' : '$lt']: maxVersion } }
+        { version: { [closedInterval ? '$gte' : '$gt']: minVersion } },
+        { version: { [closedInterval ? '$lte' : '$lt']: maxVersion } }
       ]
     })
   },

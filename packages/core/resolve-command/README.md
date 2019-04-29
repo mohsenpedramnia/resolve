@@ -6,7 +6,7 @@ Provides a function to handle a command and send the generated event to an event
 ## Usage
 When initializing a command, pass the following arguments:
 
-* `storageAdapter`  
+* `eventStoreAdapter`  
 	A configured event store adapter instance.
 	
 * `aggregates`  
@@ -29,7 +29,7 @@ Define a news handling aggregate (see the  `news-aggregate.js` file), use the `r
 
 ```js
 import commandHandler from 'resolve-command'
-import createStorageAdapter from 'resolve-storage-lite'
+import createEventStoreAdapter from 'resolve-eventstore-lite'
 
 // the news-aggregate.js file is placed below
 import newsAggregate from './news-aggregate'
@@ -37,7 +37,7 @@ import newsAggregate from './news-aggregate'
 const aggregates = [newsAggregate]
 
 const execute = commandHandler({
-  storageAdapter: createStorageAdapter(),
+  eventStoreAdapter: createEventStoreAdapter(),
   aggregates
 })
 
