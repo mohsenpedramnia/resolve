@@ -1,6 +1,6 @@
 # **Storage Adapters**
 
-This folder contains [resolve-es](../../core/resolve-es) storage adapters.
+This folder contains event store adapters.
 
 A storage adapter is an object that must contain the following functions:
 
@@ -24,14 +24,14 @@ Available adapters:
 // Import and initializtion
 import createInFileStorageAdapter from 'resolve-storage-lite'
 
-const eventStorage = createInFileStorageAdapter({
+const storageAdapter = createInFileStorageAdapter({
   databaseFile: './event-store.db'
 })
 
 // Load events
 const eventHandler = async event => {
   console.log('Event from eventstore', event)
-  // Eventstore is waiting for event processing so overflow will not occur
+  // Storage adapter is waiting for event processing so overflow will not occur
   await processEvent(event)
 }
 
@@ -39,10 +39,11 @@ const eventFilter = {
   eventTypes: ['EVENT_TYPE_1', 'EVENT_TYPE_2'], // Or null to load ALL event types
   aggregateIds: ['AGGREGATE_ID_1', 'AGGREGATE_ID_2'], // Or null to load ALL aggregate ids
   startTime: Date.now() - 10000, // Or null to load events from beginnig of time
-  finishTime: Date.now() + 10000 // Or null to load events to current time
+  finishTime: Date.now() + 10000, // Or null to load events to current time
+  closedInterval: false // false => (startTime, finishTime), true => [startTime, finishTime] 
 }
 
-await eventStore.loadEvents(eventFilter, eventHandler)
+await storageAdapter.loadEvents(eventFilter, eventHandler)
 
 // Save event
 const event = {
@@ -54,7 +55,7 @@ const event = {
   }
 }
 
-await eventStore.saveEvent(event)
+await storageAdapter.saveEvent(event)
 ```
 
 ![Analytics](https://ga-beacon.appspot.com/UA-118635726-1/packages-resolve-storage-adapters-readme?pixel)

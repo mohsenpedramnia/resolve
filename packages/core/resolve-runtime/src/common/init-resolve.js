@@ -1,4 +1,3 @@
-import createEventStore from 'resolve-es'
 import createCommandExecutor from 'resolve-command'
 import createQueryExecutor from 'resolve-query'
 
@@ -9,10 +8,14 @@ const initResolve = async resolve => {
     readModelConnectors: readModelConnectorsCreators
   } = resolve.assemblies
 
-  const storageAdapter = createStorageAdapter()
-  const eventStore = createEventStore({
-    storage: storageAdapter,
-    publishEvent: resolve.publishEvent
+  const baseStorageAdapter = createStorageAdapter()
+  const storageAdapter = Object.create(baseStorageAdapter, {
+    saveEvent: {
+      value: async event => {
+        await baseStorageAdapter.saveEvent(event)
+        await resolve.publishEvent(event)
+      }
+    }
   })
 
   resolve.readModels = resolve.readModels.slice(0)
@@ -32,13 +35,13 @@ const initResolve = async resolve => {
   }
 
   const executeCommand = createCommandExecutor({
-    eventStore,
+    storageAdapter,
     aggregates,
     snapshotAdapter
   })
 
   const executeQuery = createQueryExecutor({
-    eventStore,
+    storageAdapter,
     readModelConnectors,
     snapshotAdapter,
     doUpdateRequest: resolve.doUpdateRequest,
@@ -48,8 +51,7 @@ const initResolve = async resolve => {
 
   Object.assign(resolve, {
     executeCommand,
-    executeQuery,
-    eventStore
+    executeQuery
   })
 
   Object.defineProperties(resolve, {

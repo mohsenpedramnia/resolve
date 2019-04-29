@@ -1,13 +1,13 @@
 # **resolve-command**
 [![npm version](https://badge.fury.io/js/resolve-command.svg)](https://badge.fury.io/js/resolve-command)
 
-Provides a function to handle a command and send the generated event to an [event store](../resolve-es) based on definitions of [aggregates](../resolve-scripts/src/template#aggregates-and-read-models-) and their commands. 
+Provides a function to handle a command and send the generated event to an event store based on definitions of [aggregates](../resolve-scripts/src/template#aggregates-and-read-models-) and their commands. 
 
 ## Usage
 When initializing a command, pass the following arguments:
 
-* `eventStore`  
-	A configured [eventStore](../resolve-es) instance.
+* `storageAdapter`  
+	A configured event store adapter instance.
 	
 * `aggregates`  
 	An array of [aggregates](../resolve-scripts/src/template#aggregates-and-read-models-).  
@@ -29,22 +29,15 @@ Define a news handling aggregate (see the  `news-aggregate.js` file), use the `r
 
 ```js
 import commandHandler from 'resolve-command'
-import createEsStorage from 'resolve-storage-lite'
-import createEventStore from 'resolve-es'
+import createStorageAdapter from 'resolve-storage-lite'
 
 // the news-aggregate.js file is placed below
 import newsAggregate from './news-aggregate'
 
 const aggregates = [newsAggregate]
 
-const eventStore = createEventStore({ storage: createEsStorage() })
-
-eventStore.onEvent(['NewsCreated'], event =>
-  console.log('Event emitted', event)
-)
-
 const execute = commandHandler({
-  eventStore,
+  storageAdapter: createStorageAdapter(),
   aggregates
 })
 

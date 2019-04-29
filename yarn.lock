@@ -11942,6 +11942,13 @@ resolve-dir@^1.0.0:
     expand-tilde "^2.0.0"
     global-modules "^1.0.0"
 
+resolve-es@0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/resolve-es/-/resolve-es-0.20.1.tgz#d2de79553072f8ac2ee430c1db4ccb9562bb9228"
+  integrity sha512-55qJA1tMrn6DfRzJUqCZbBmlc0v+H3oWlwt0IUIxkqpaqiHvW9KOG2DPRF0DtgMQVIc1eKicOt8kHd3EGrxzfA==
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+
 resolve-from@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-1.0.1.tgz#26cbfe935d1aeeeabb29bc3fe5aeb01e93d44226"

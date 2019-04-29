@@ -12,19 +12,43 @@ export function CommandError(message = 'Command error') {
 
 CommandError.prototype = Object.create(Error.prototype)
 
+const isInteger = val =>
+  val != null && val.constructor === Number && parseInt(val) === val
+const isString = val => val != null && val.constructor === String
+
 const verifyCommand = async ({ aggregateId, aggregateName, type }) => {
-  if (!aggregateId) throw new Error('The "aggregateId" argument is required')
-  if (aggregateId.constructor !== String)
-    throw new Error('The "aggregateId" argument must be a string')
-  if (!aggregateName)
+  if (!isString(aggregateId)) {
+    throw new Error('The "aggregateId" argument is required')
+  }
+  if (!isString(aggregateName)) {
     throw new Error('The "aggregateName" argument is required')
-  if (!type) throw new Error('The "type" argument is required')
+  }
+  if (!isString(type)) {
+    throw new Error('The "type" argument is required')
+  }
+}
+
+const verifyEvent = event => {
+  if (!isString(event.type)) {
+    throw new Error('The `type` field is invalid')
+  }
+  if (!isString(event.aggregateId)) {
+    throw new Error('The `aggregateId` field is invalid')
+  }
+  if (!isInteger(event.aggregateVersion)) {
+    throw new Error('The `aggregateVersion` field is invalid')
+  }
+  if (!isInteger(event.timestamp)) {
+    throw new Error('The `timestamp` field is invalid')
+  }
+
+  event.aggregateId = String(event.aggregateId)
 }
 
 const getAggregateState = async (
   { projection, serializeState, deserializeState, invariantHash = null },
   aggregateId,
-  eventStore,
+  storageAdapter,
   snapshotAdapter = null
 ) => {
   const snapshotKey =
@@ -87,7 +111,7 @@ const getAggregateState = async (
     })
   }
 
-  await eventStore.loadEvents(
+  await storageAdapter.loadEvents(
     {
       aggregateIds: [aggregateId],
       startTime: lastTimestamp,
@@ -104,7 +128,7 @@ const getAggregateState = async (
 const executeCommand = async (
   command,
   aggregate,
-  eventStore,
+  storageAdapter,
   jwtToken,
   snapshotAdapter
 ) => {
@@ -116,7 +140,7 @@ const executeCommand = async (
   } = await getAggregateState(
     aggregate,
     aggregateId,
-    eventStore,
+    storageAdapter,
     snapshotAdapter
   )
 
@@ -140,29 +164,31 @@ const executeCommand = async (
   event.aggregateVersion = aggregateVersion + 1
   event.timestamp = Math.max(Date.now(), lastTimestamp)
 
+  verifyEvent(event)
+
   return event
 }
 
-function createExecutor({ eventStore, aggregate, snapshotAdapter }) {
+function createExecutor({ storageAdapter, aggregate, snapshotAdapter }) {
   return async (command, jwtToken) => {
     const event = await executeCommand(
       command,
       aggregate,
-      eventStore,
+      storageAdapter,
       jwtToken,
       snapshotAdapter
     )
 
-    await eventStore.saveEvent(event)
+    await storageAdapter.saveEvent(event)
 
     return event
   }
 }
 
-export default ({ eventStore, aggregates, snapshotAdapter }) => {
+export default ({ storageAdapter, aggregates, snapshotAdapter }) => {
   const executors = aggregates.reduce((result, aggregate) => {
     result[aggregate.name] = createExecutor({
-      eventStore,
+      storageAdapter,
       aggregate,
       snapshotAdapter
     })

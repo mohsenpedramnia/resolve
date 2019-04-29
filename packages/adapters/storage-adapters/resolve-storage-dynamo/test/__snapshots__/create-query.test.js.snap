@@ -99,7 +99,7 @@ Object {
     ":finishTime": 10,
     ":startTime": 5,
   },
-  "FilterExpression": "(#type = :eventType0) AND (#timestamp BETWEEN :startTime AND :finishTime)",
+  "FilterExpression": "(#type = :eventType0) AND ((#timestamp > :startTime) AND (#timestamp < :finishTime))",
   "KeyConditionExpression": "(#aggregateId = :aggregateId0)",
   "ScanIndexForward": true,
   "TableName": "tableName",

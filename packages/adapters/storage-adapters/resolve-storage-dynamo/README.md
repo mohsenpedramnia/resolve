@@ -1,7 +1,7 @@
 # **resolve-storage-dynamo**
 [![npm version](https://badge.fury.io/js/resolve-storage-dynamo.svg)](https://badge.fury.io/js/resolve-storage-dynamo)
 
-This package is a `resolve-es` adapter for storing events using [DynamoDB](https://aws.amazon.com/dynamodb/).
+This package is an event store adapter for storing events using [DynamoDB](https://aws.amazon.com/dynamodb/).
 
 ## Available Parameters
 * `...connectionOptions` - a DynamoDB connection options. Refer to [Connection Options Format](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html) for more information.

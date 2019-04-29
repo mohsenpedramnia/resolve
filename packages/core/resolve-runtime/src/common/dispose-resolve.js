@@ -1,6 +1,5 @@
 const disposeResolve = async resolve => {
   try {
-    await resolve.eventStore.dispose()
     await resolve.executeCommand.dispose()
     await resolve.executeQuery.dispose()
 

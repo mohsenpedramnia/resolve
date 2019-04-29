@@ -33,7 +33,7 @@ Object {
     ":finishTime": 10,
     ":startTime": 5,
   },
-  "conditionExpression": "(#timestamp BETWEEN :startTime AND :finishTime)",
+  "conditionExpression": "((#timestamp > :startTime) AND (#timestamp < :finishTime))",
 }
 `;
 

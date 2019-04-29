@@ -7,7 +7,7 @@ This package includes event broker for local run.
 
 When initializing an event broker, pass the following arguments:
 
-* `eventStore` - the configured [eventStore](../resolve-es) instance.
+* `storageAdapter` - the configured event store adapter instance.
 * `bucketSize` - the bucket size.
 * `pathToFile` - the path to a file where state of the bus are stored.
 * `zmqBrokerAddress` - the ZMQ broker address.
@@ -16,7 +16,7 @@ When initializing an event broker, pass the following arguments:
 ## Example
 ```js
 const localBusBroker = createBroker({
-  eventStore,
+  storageAdapter,
   batchSize: 100,
   databaseFile: 'path/to/file',
   zmqBrokerAddress: "tcp://127.0.0.1:3500",

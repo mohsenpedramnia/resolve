@@ -1,7 +1,7 @@
 # **resolve-storage-mysql**
 [![npm version](https://badge.fury.io/js/resolve-storage-mysql.svg)](https://badge.fury.io/js/resolve-storage-mysql)
 
-This package is a `resolve-es` adapter for storing events using MySQL.
+This package is an event store adapter for storing events using MySQL.
 
 ## Available Parameters
 

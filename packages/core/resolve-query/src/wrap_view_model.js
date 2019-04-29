@@ -1,4 +1,4 @@
-const wrapViewModel = (viewModel, snapshotAdapter, eventStore) => {
+const wrapViewModel = (viewModel, snapshotAdapter, storageAdapter) => {
   const getKey = aggregateIds =>
     Array.isArray(aggregateIds) ? aggregateIds.sort().join(',') : aggregateIds
   const workers = new Map()
@@ -66,7 +66,7 @@ const wrapViewModel = (viewModel, snapshotAdapter, eventStore) => {
             }
           }
 
-          await eventStore.loadEvents(
+          await storageAdapter.loadEvents(
             {
               aggregateIds: aggregateIds !== '*' ? aggregateIds : null,
               startTime: lastTimestamp,

@@ -1,7 +1,7 @@
 # **resolve-storage-base**
 [![npm version](https://badge.fury.io/js/resolve-storage-base.svg)](https://badge.fury.io/js/resolve-storage-base)
 
-This base package is a `resolve-es` adapter for storing events.
+This base package is an event store adapter for storing events.
 
 ## Usage
 

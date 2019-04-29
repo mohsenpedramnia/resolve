@@ -1,7 +1,7 @@
 # **resolve-storage-lite**
 [![npm version](https://badge.fury.io/js/resolve-storage-lite.svg)](https://badge.fury.io/js/resolve-storage-lite)
 
-This package is a `resolve-es` adapter for storing events using a file or memory.
+This package is an event store adapter for storing events using a file or memory.
 
 ## Available Parameters
 You can pass the following argument when initializing an adapter:

@@ -17,12 +17,12 @@ const query = createQuery({
   doUpdateRequest,
   readModels,
   viewModels,
-  eventStore
+  storageAdapter
 })
 ```
 
 #### Usage
-* `eventStore` - A configured [eventStore](../resolve-es) instance.
+* `storageAdapter` - A configured event store adapter instance.
 * `snapshotAdapter` - An adapter for loading and saving the intermediate Aggregate state. The argument is optional, snapshots are not used by default.
 * `readModelConnectors` - A Read Model [connector](../../adapters/readmodel-adapters) instances.
 
