@@ -5,7 +5,8 @@ const loadEvents = async (
     aggregateIds,
     startTime,
     finishTime,
-    maxEvents = Number.POSITIVE_INFINITY
+    maxEvents = Number.POSITIVE_INFINITY,
+    closedInterval = false
   },
   callback
 ) => {
@@ -22,11 +23,15 @@ const loadEvents = async (
       `\`aggregateId\` IN (${aggregateIds.map(injectString)})`
     )
   }
+
+  const ltOp = closedInterval ? '<=' : '<'
+  const gtOp = closedInterval ? '>=' : '>'
+
   if (startTime != null) {
-    queryConditions.push(`\`timestamp\` > ${injectNumber(startTime)}`)
+    queryConditions.push(`\`timestamp\` ${gtOp} ${injectNumber(startTime)}`)
   }
   if (finishTime != null) {
-    queryConditions.push(`\`timestamp\` < ${injectNumber(finishTime)}`)
+    queryConditions.push(`\`timestamp\` ${ltOp} ${injectNumber(finishTime)}`)
   }
 
   const resultQueryCondition =

@@ -1,11 +1,18 @@
-const createTimestampExpression = ({ startTime, finishTime }) => {
+const createTimestampExpression = ({
+  startTime,
+  finishTime,
+  closedInterval = false
+}) => {
+  const ltOp = closedInterval ? '<=' : '<'
+  const gtOp = closedInterval ? '>=' : '>'
+
   const conditionExpression =
     startTime && finishTime
-      ? '(#timestamp BETWEEN :startTime AND :finishTime)'
+      ? `((#timestamp ${gtOp} :startTime) AND (#timestamp ${ltOp} :finishTime))`
       : startTime
-      ? '(#timestamp > :startTime)'
+      ? `(#timestamp ${gtOp} :startTime)`
       : finishTime
-      ? '(#timestamp < :finishTime)'
+      ? `(#timestamp ${ltOp} :finishTime)`
       : ''
 
   const attributeNames =

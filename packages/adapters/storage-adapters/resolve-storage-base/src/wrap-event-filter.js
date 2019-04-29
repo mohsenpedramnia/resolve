@@ -5,7 +5,12 @@ const validateEventFilter = filter => {
 
   const stringArrayFields = ['eventTypes', 'aggregateIds']
   const numericFields = ['startTime', 'finishTime', 'maxEvents']
-  const allowedFields = [...stringArrayFields, ...numericFields]
+  const booleanFields = ['closedInterval']
+  const allowedFields = [
+    ...stringArrayFields,
+    ...numericFields,
+    ...booleanFields
+  ]
 
   for (const key of Object.keys(filter)) {
     if (allowedFields.indexOf(key) < 0) {
@@ -30,6 +35,12 @@ const validateEventFilter = filter => {
   for (const key of numericFields) {
     if (filter[key] != null && filter[key].constructor !== Number) {
       throw new Error(`Event filter field ${key} should be number`)
+    }
+  }
+
+  for (const key of booleanFields) {
+    if (filter[key] != null && filter[key].constructor !== Boolean) {
+      throw new Error(`Event filter field ${key} should be boolean`)
     }
   }
 }

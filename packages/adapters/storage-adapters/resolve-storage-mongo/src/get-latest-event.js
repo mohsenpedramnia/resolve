@@ -3,14 +3,17 @@ const projectionExpression = { _id: 0 }
 
 const getLatestEvent = async (
   { collection },
-  { eventTypes, aggregateIds, startTime, finishTime }
+  { eventTypes, aggregateIds, startTime, finishTime, closedInterval = false }
 ) => {
+  const ltOp = closedInterval ? '$lte' : '$lt'
+  const gtOp = closedInterval ? '$gte' : '$gt'
+
   const findExpression = {
     ...(eventTypes != null ? { type: { $in: eventTypes } } : {}),
     ...(aggregateIds != null ? { aggregateId: { $in: aggregateIds } } : {}),
     timestamp: {
-      $gt: startTime != null ? startTime : 0,
-      $lt: finishTime != null ? finishTime : Infinity
+      [gtOp]: startTime != null ? startTime : 0,
+      [ltOp]: finishTime != null ? finishTime : Infinity
     }
   }
 

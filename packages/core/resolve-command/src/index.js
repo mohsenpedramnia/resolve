@@ -44,7 +44,7 @@ const getAggregateState = async (
 
   let aggregateState = null
   let aggregateVersion = 0
-  let lastTimestamp = -1
+  let lastTimestamp = 0
 
   try {
     if (snapshotKey == null) throw new Error()
@@ -83,14 +83,15 @@ const getAggregateState = async (
     await snapshotAdapter.saveSnapshot(snapshotKey, {
       state: serializeState(aggregateState),
       version: aggregateVersion,
-      timestamp: lastTimestamp - 1
+      timestamp: lastTimestamp
     })
   }
 
   await eventStore.loadEvents(
     {
       aggregateIds: [aggregateId],
-      startTime: lastTimestamp - 1
+      startTime: lastTimestamp,
+      closedInterval: true
     },
     snapshotAdapter != null && snapshotKey != null
       ? snapshotHandler

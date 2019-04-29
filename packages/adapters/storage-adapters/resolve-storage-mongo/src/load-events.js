@@ -8,16 +8,20 @@ const loadEvents = async (
     aggregateIds,
     startTime,
     finishTime,
-    maxEvents = Number.POSITIVE_INFINITY
+    maxEvents = Number.POSITIVE_INFINITY,
+    closedInterval = false
   },
   callback
 ) => {
+  const ltOp = closedInterval ? '$lte' : '$lt'
+  const gtOp = closedInterval ? '$gte' : '$gt'
+
   const findExpression = {
     ...(eventTypes != null ? { type: { $in: eventTypes } } : {}),
     ...(aggregateIds != null ? { aggregateId: { $in: aggregateIds } } : {}),
     timestamp: {
-      $gt: startTime != null ? startTime : 0,
-      $lt: finishTime != null ? finishTime : Infinity
+      [gtOp]: startTime != null ? startTime : 0,
+      [ltOp]: finishTime != null ? finishTime : Infinity
     }
   }
 

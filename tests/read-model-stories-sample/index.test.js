@@ -278,7 +278,7 @@ describe('Read-model sample', () => {
     )
   })
 
-  test(`resolve "getStoriesWithRangedVersion" ({ minVersion: 1, maxVersion: 3, openRange: false })`, async () => {
+  test(`resolve "getStoriesWithRangedVersion" ({ minVersion: 1, maxVersion: 3, closedInterval: false })`, async () => {
     expect(
       await givenEvents(events)
         .readModel({
@@ -290,14 +290,14 @@ describe('Read-model sample', () => {
         .getStoriesWithRangedVersion({
           minVersion: 1,
           maxVersion: 3,
-          openRange: false
+          closedInterval: false
         })
     ).toMatchSnapshot(
-      `.getStoriesWithRangedVersion({ minVersion: 1, maxVersion: 3, openRange: false })`
+      `.getStoriesWithRangedVersion({ minVersion: 1, maxVersion: 3, closedInterval: false })`
     )
   })
 
-  test(`resolve "getStoriesWithRangedVersion" ({ minVersion: 1, maxVersion: 3, openRange: true })`, async () => {
+  test(`resolve "getStoriesWithRangedVersion" ({ minVersion: 1, maxVersion: 3, closedInterval: true })`, async () => {
     expect(
       await givenEvents(events)
         .readModel({
@@ -309,10 +309,10 @@ describe('Read-model sample', () => {
         .getStoriesWithRangedVersion({
           minVersion: 1,
           maxVersion: 3,
-          openRange: true
+          closedInterval: true
         })
     ).toMatchSnapshot(
-      `.getStoriesWithRangedVersion({ minVersion: 1, maxVersion: 3, openRange: true })`
+      `.getStoriesWithRangedVersion({ minVersion: 1, maxVersion: 3, closedInterval: true })`
     )
   })
 

@@ -25,7 +25,7 @@ const wrapViewModel = (viewModel, snapshotAdapter, eventStore) => {
         (async () => {
           const snapshotKey = `${viewModel.invariantHash};${key}`
           let aggregatesVersionsMap = new Map()
-          let lastTimestamp = -1
+          let lastTimestamp = 0
           let state = null
 
           try {
@@ -53,7 +53,7 @@ const wrapViewModel = (viewModel, snapshotAdapter, eventStore) => {
               aggregateArgs,
               jwtToken
             )
-            lastTimestamp = event.timestamp - 1
+            lastTimestamp = event.timestamp
 
             aggregatesVersionsMap.set(event.aggregateId, event.aggregateVersion)
 
@@ -70,7 +70,8 @@ const wrapViewModel = (viewModel, snapshotAdapter, eventStore) => {
             {
               aggregateIds: aggregateIds !== '*' ? aggregateIds : null,
               startTime: lastTimestamp,
-              eventTypes: Object.keys(viewModel.projection)
+              eventTypes: Object.keys(viewModel.projection),
+              closedInterval: true
             },
             handler
           )
