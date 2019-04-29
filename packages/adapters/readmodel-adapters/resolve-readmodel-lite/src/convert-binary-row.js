@@ -1,15 +1,16 @@
-const convertBinaryRow = (row, readModelName, fieldList) => {
+const convertBinaryRow = (originalRow, readModelName, fieldList) => {
   if (fieldList != null && fieldList.constructor !== Object) {
     throw new Error(
       'Field list should be object with enumerated selected fields'
     )
   }
 
-  Object.setPrototypeOf(row, Object.prototype)
-  delete row[`RESOLVE-${readModelName}`]
-  for (const key of Object.keys(row)) {
+  const row = {}
+  for (const key of Object.keys(originalRow)) {
+    if (key === `RESOLVE-${readModelName}`) continue
+
     row[key] = JSON.parse(
-      String(row[key])
+      String(originalRow[key])
         .replace(/\u001a2/g, '.')
         .replace(/\u001a1/g, '"')
         .replace(/\u001a0/g, '\u001a')

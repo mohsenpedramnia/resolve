@@ -6,7 +6,9 @@ const queryHandler = async (req, res) => {
   try {
     const baseQueryUrl = getRootBasedUrl(req.resolve.rootPath, '/api/query/')
     const paramsPath = req.path.substring(baseQueryUrl.length)
-    const [modelName, modelOptions] = paramsPath.split('/')
+    const [modelName, modelOptions] = paramsPath
+      .split('/')
+      .map(decodeURIComponent)
 
     if (modelName == null || modelOptions == null) {
       throw new Error('Invalid "modelName" and/or "modelOptions" parameters')

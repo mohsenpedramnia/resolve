@@ -4,3 +4,8 @@ packages/**/dist
 examples/**/dist
 examples/**/lib
 examples/shopping-list-advanced/native/resolve/
+website/
+.vscode/
+.github/
+docs/
+.idea/
