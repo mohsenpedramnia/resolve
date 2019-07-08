@@ -19,7 +19,7 @@ test('connect should connect to mongodb database', async () => {
   const pool = {
     config: {
       url: 'url',
-      collectionName: 'collectionName'
+      tableName: 'collectionName'
     }
   }
 

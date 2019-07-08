@@ -1,7 +1,5 @@
 const escapeId = str => `"${String(str).replace(/(["])/gi, '$1$1')}"`
 const escape = str => `'${String(str).replace(/(['])/gi, '$1$1')}'`
-const coerceEmptyString = obj =>
-  (obj != null && obj.constructor !== String) || obj == null ? 'default' : obj
 
 const runQuery = async (pool, querySQL) => {
   const rows = Array.from(await pool.connection.all(querySQL))
@@ -40,8 +38,19 @@ const connect = async (imports, pool, options) => {
     performanceTracer,
     ...connectionOptions
   } = options
-  tablePrefix = coerceEmptyString(tablePrefix)
-  databaseFile = coerceEmptyString(databaseFile)
+  if (databaseFile == null || databaseFile.constructor !== String) {
+    throw new Error(
+      'Option "databaseFile" for "resolve-readmodel-lite" adapter configuration should be string'
+    )
+  }
+
+  if (tablePrefix != null && tablePrefix.constructor !== String) {
+    throw new Error(
+      'Option "tablePrefix" for "resolve-readmodel-lite" adapter configuration should be string'
+    )
+  } else if (tablePrefix == null) {
+    tablePrefix = ''
+  }
 
   Object.assign(pool, {
     runRawQuery: runRawQuery.bind(null, pool),

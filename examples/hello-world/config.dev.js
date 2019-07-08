@@ -63,7 +63,8 @@ const devConfig = {
   */ storageAdapter: {
     module: 'resolve-storage-lite',
     options: {
-      databaseFile: 'data/event-store.db'
+      databaseFile: 'data/event-store.db',
+      tableName: 'Events'
     }
   },
   /*
@@ -71,7 +72,7 @@ const devConfig = {
       module: 'resolve-storage-mongo',
       options: {
         url: 'mongodb://127.0.0.1:27017/MyDatabaseName',
-        collectionName: 'Events'
+        tableName: 'Events'
       }
     }
   */

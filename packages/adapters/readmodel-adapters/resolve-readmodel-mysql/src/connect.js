@@ -51,10 +51,11 @@ const makeNestedPath = nestedPath => {
 const connect = async (imports, pool, options) => {
   let { tablePrefix, performanceTracer, ...connectionOptions } = options
 
-  if (
-    tablePrefix == null ||
-    (tablePrefix != null && tablePrefix.constructor !== String)
-  ) {
+  if (tablePrefix != null && tablePrefix.constructor !== String) {
+    throw new Error(
+      'Option "tablePrefix" for "resolve-readmodel-mysql" adapter configuration should be string'
+    )
+  } else if (tablePrefix == null) {
     tablePrefix = ''
   }
 

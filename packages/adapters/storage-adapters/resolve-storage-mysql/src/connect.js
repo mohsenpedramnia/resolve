@@ -1,5 +1,13 @@
 const connect = async (pool, { MySQL, escapeId, escape }) => {
-  const { tableName, ...connectionOptions } = pool.config
+  let { tableName, ...connectionOptions } = pool.config
+
+  if (tableName != null && tableName.constructor !== String) {
+    throw new Error(
+      'Option "tableName" for "resolve-storage-mysql" adapter configuration should be string'
+    )
+  } else if (tableName == null) {
+    tableName = 'Events'
+  }
 
   const connection = await MySQL.createConnection(connectionOptions)
 

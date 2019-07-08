@@ -56,10 +56,12 @@ const getCollection = async (
 
 const connect = async (imports, pool, options) => {
   let { url, tablePrefix, performanceTracer, ...connectionOptions } = options
-  if (
-    tablePrefix == null ||
-    (tablePrefix != null && tablePrefix.constructor !== String)
-  ) {
+
+  if (tablePrefix != null && tablePrefix.constructor !== String) {
+    throw new Error(
+      'Option "tablePrefix" for "resolve-readmodel-mongo" adapter configuration should be string'
+    )
+  } else if (tablePrefix == null) {
     tablePrefix = ''
   }
 

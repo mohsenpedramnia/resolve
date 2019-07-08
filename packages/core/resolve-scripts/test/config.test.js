@@ -23,7 +23,7 @@ describe('validate schema', () => {
         storageAdapter: {
           module: 'resolve-storage-mongo',
           options: {
-            collectionName: 'MyEvents'
+            tableName: 'MyEvents'
           }
         }
       })
@@ -171,7 +171,7 @@ describe('validate schema (fail)', () => {
         storageAdapter: {
           module: 123,
           options: {
-            collectionName: 'MyEvents'
+            tableName: 'MyEvents'
           }
         }
       })
