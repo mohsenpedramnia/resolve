@@ -18,12 +18,6 @@
     "sagas": [],
     "enhancers": []
   },
-  "storageAdapter": {
-    "module": "resolve-storage-lite",
-    "options": {
-      "databaseFile": "data/event-store.db"
-    }
-  },
   "subscribeAdapter": {
     "module": "resolve-subscribe-socket.io",
     "options": {}

@@ -37,7 +37,8 @@ const testFunctionalConfig = {
   storageAdapter: {
     module: 'resolve-storage-lite',
     options: {
-      databaseFile: 'data/event-store-test-functional.db'
+      databaseFile: 'data/event-store-test-functional.db',
+      tableName: 'Events'
     }
   },
   eventBroker: {

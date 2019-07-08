@@ -24,7 +24,8 @@ const resolveConfig = {
   storageAdapter: {
     module: 'resolve-storage-lite',
     options: {
-      databaseFile: 'data/event-store.db'
+      databaseFile: 'data/event-store.db',
+      tableName: 'Events'
     }
   },
   subscribeAdapter: {

@@ -18,6 +18,13 @@ const devConfig = {
   },
   eventBroker: {
     databaseFile: 'data/local-bus-broker.db'
+  },
+  storageAdapter: {
+    module: 'resolve-storage-lite',
+    options: {
+      databaseFile: 'data/event-store.db',
+      tableName: 'Events'
+    }
   }
 }
 
