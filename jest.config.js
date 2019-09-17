@@ -7,5 +7,6 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.js'],
   transform: {
     '^.+\\.js$': path.resolve(__dirname, 'jest.transform.js')
-  }
+  },
+  globalSetup: 'tests/prepare-credentials.js'
 }
