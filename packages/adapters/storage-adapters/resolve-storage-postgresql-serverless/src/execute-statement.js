@@ -1,30 +1,73 @@
-const executeStatement = async (pool, sql) => {
-  const { coercer } = pool
+import { EOL } from 'os'
 
-  const result = await pool.rdsDataService
-    .executeStatement({
-      resourceArn: pool.dbClusterOrInstanceArn,
-      secretArn: pool.awsSecretStoreArn,
-      database: 'postgres',
-      continueAfterTimeout: false,
-      includeResultMetadata: true,
-      sql
-    })
-    .promise()
+const executeStatement = async (pool, sql, transactionAutoWrap = true) => {
+  let transactionId = undefined
+  const errors = []
+  let rows = null
 
-  const { columnMetadata, records } = result
+  try {
+    const { coercer } = pool
 
-  if (!Array.isArray(records) || columnMetadata == null) {
-    return null
+    if(transactionAutoWrap) {
+      void ({ transactionId } = await pool.rdsDataService
+        .beginTransaction({
+          resourceArn: pool.dbClusterOrInstanceArn,
+          secretArn: pool.awsSecretStoreArn,
+          database: 'postgres'
+        })
+        .promise())
+      if (transactionId == null) {
+        throw new Error('Can not acquire event-store request slot')
+      }
+    }
+
+    const result = await pool.rdsDataService
+      .executeStatement({
+        resourceArn: pool.dbClusterOrInstanceArn,
+        secretArn: pool.awsSecretStoreArn,
+        database: 'postgres',
+        continueAfterTimeout: false,
+        includeResultMetadata: true,
+        transactionId,
+        sql
+      })
+      .promise()
+
+    const { columnMetadata, records } = result
+
+    if (Array.isArray(records) && columnMetadata != null) {
+      rows = []
+      for (const record of records) {
+        const row = {}
+        for (let i = 0; i < columnMetadata.length; i++) {
+          row[columnMetadata[i].name] = coercer(record[i])
+        }
+        rows.push(row)
+      }
+    }
+  } catch (error) {
+    errors.push(error)
+  } finally {
+    if(transactionAutoWrap) {
+      try {
+        await pool.rdsDataService
+          .commitTransaction({
+            resourceArn: pool.dbClusterOrInstanceArn,
+            secretArn: pool.awsSecretStoreArn,
+            transactionId
+          })
+          .promise()
+      } catch (error) {
+        errors.push(error)
+      }
+    }
   }
 
-  const rows = []
-  for (const record of records) {
-    const row = {}
-    for (let i = 0; i < columnMetadata.length; i++) {
-      row[columnMetadata[i].name] = coercer(record[i])
-    }
-    rows.push(row)
+  if (errors.length > 0) {
+    const error = new Error()
+    error.message = errors.map(({ message }) => message).join(EOL)
+    error.stack = errors.map(({ stack }) => stack).join(EOL)
+    throw error
   }
 
   return rows

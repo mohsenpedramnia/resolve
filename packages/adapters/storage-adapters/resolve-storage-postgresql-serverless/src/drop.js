@@ -7,10 +7,14 @@ const drop = async ({
   await executeStatement(
     [
       `DROP TABLE ${escapeId(databaseName)}.${escapeId(tableName)}; `,
+      `DROP TABLE ${escapeId(databaseName)}.${escapeId(
+        `${tableName}-threads`
+      )}; `,
       `DROP TABLE IF EXISTS ${escapeId(databaseName)}.${escapeId(
         `${tableName}-freeze`
       )}; `
-    ].join('')
+    ].join(''),
+    false
   )
 }
 
