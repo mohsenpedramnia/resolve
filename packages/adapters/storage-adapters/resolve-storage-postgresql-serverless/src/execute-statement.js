@@ -1,25 +1,11 @@
 import { EOL } from 'os'
 
-const executeStatement = async (pool, sql, transactionAutoWrap = true) => {
-  let transactionId = undefined
+const executeStatement = async (pool, sql) => {
   const errors = []
   let rows = null
 
   try {
     const { coercer } = pool
-
-    if(transactionAutoWrap) {
-      void ({ transactionId } = await pool.rdsDataService
-        .beginTransaction({
-          resourceArn: pool.dbClusterOrInstanceArn,
-          secretArn: pool.awsSecretStoreArn,
-          database: 'postgres'
-        })
-        .promise())
-      if (transactionId == null) {
-        throw new Error('Can not acquire event-store request slot')
-      }
-    }
 
     const result = await pool.rdsDataService
       .executeStatement({
@@ -28,7 +14,6 @@ const executeStatement = async (pool, sql, transactionAutoWrap = true) => {
         database: 'postgres',
         continueAfterTimeout: false,
         includeResultMetadata: true,
-        transactionId,
         sql
       })
       .promise()
@@ -47,20 +32,6 @@ const executeStatement = async (pool, sql, transactionAutoWrap = true) => {
     }
   } catch (error) {
     errors.push(error)
-  } finally {
-    if(transactionAutoWrap) {
-      try {
-        await pool.rdsDataService
-          .commitTransaction({
-            resourceArn: pool.dbClusterOrInstanceArn,
-            secretArn: pool.awsSecretStoreArn,
-            transactionId
-          })
-          .promise()
-      } catch (error) {
-        errors.push(error)
-      }
-    }
   }
 
   if (errors.length > 0) {

@@ -2,10 +2,13 @@ import { ConcurrentError } from 'resolve-storage-base'
 
 import { RESERVED_EVENT_SIZE, LONG_NUMBER_SQL_TYPE } from './constants'
 
+const isThreadIdNullRegExp = /null value in column "threadId"/i
+
 const saveEvent = async (
   { databaseName, tableName, executeStatement, escapeId, escape },
   event
 ) => {
+  while (true) {
     try {
       const serializedEvent = [
         `${escape(event.aggregateId)},`,
@@ -37,20 +40,16 @@ const saveEvent = async (
         SELECT SL.${escapeId('threadId')}, SL.${escapeId('threadCounter')}
         FROM ${escapeId(databaseName)}.${escapeId(`${tableName}-threads`)} SL
         WHERE SL.${escapeId('threadId')} = COALESCE(
-          (SELECT ${escapeId('threadId')} FROM ${escapeId(databaseName)}.${escapeId(
-          `${tableName}-threads`
-        )}
+          (SELECT ${escapeId('threadId')} FROM ${escapeId(
+          databaseName
+        )}.${escapeId(`${tableName}-threads`)}
           FOR UPDATE SKIP LOCKED LIMIT 1),
-          (SELECT ${escapeId('threadId')} FROM ${escapeId(databaseName)}.${escapeId(
-          `${tableName}-threads`
-        )}
-           OFFSET FLOOR(Random() * 256)
-           LIMIT 1)
+          (SELECT FLOOR(Random() * 256) AS ${escapeId('threadId')})
         ) FOR UPDATE LIMIT 1),
         ${escapeId('update_vector_id')} AS (
           UPDATE ${escapeId(databaseName)}.${escapeId(
           `${tableName}-threads`
-          )} ST
+        )} ST
           SET ${escapeId('threadCounter')} = ST.${escapeId('threadCounter')} + 1
           WHERE ST.${escapeId('threadId')} = (
             SELECT ${escapeId('threadId')} FROM ${escapeId('vector_id')} LIMIT 1
@@ -67,26 +66,36 @@ const saveEvent = async (
         ${escapeId('payload')},
         ${escapeId('eventSize')}
       ) VALUES (
-        (SELECT ${escapeId('threadId')} FROM ${escapeId('vector_id')} LIMIT 1),
-        (SELECT ${escapeId('threadCounter')} FROM ${escapeId('vector_id')} LIMIT 1),
+        (SELECT VI.${escapeId('threadId')} FROM ${escapeId(
+          'vector_id'
+        )} VI LIMIT 1),
+        (SELECT VI.${escapeId('threadCounter')} FROM ${escapeId(
+          'vector_id'
+        )} VI LIMIT 1),
         CAST(extract(epoch from now()) * 1000 AS ${LONG_NUMBER_SQL_TYPE}), 
         ${serializedEvent},
         ${byteLength}
       )`
       )
 
+      break
     } catch (error) {
       const errorMessage =
         error != null && error.message != null ? error.message : ''
 
       if (errorMessage.indexOf('subquery used as an expression') > -1) {
         throw new Error('Event store is frozen')
-    } else if (errorMessage.indexOf('duplicate key') > -1 && errorMessage.indexOf('aggregateIdAndVersion') > -1) {
+      } else if (
+        errorMessage.indexOf('duplicate key') > -1 &&
+        errorMessage.indexOf('aggregateIdAndVersion') > -1
+      ) {
         throw new ConcurrentError(event.aggregateId)
+      } else if (isThreadIdNullRegExp.test(error)) {
+        continue
       } else {
         throw error
       }
-
+    }
   }
 }
 
