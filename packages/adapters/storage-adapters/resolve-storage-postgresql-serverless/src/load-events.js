@@ -97,10 +97,8 @@ const loadEvents = async (
         .padStart(12, '0')}'::${INT8_SQL_TYPE}`
       delete event.totalEventSize
       delete event.eventSize
-      //delete event.threadCounter
-      //delete event.threadId
-
-      console.log('event', event)
+      delete event.threadCounter
+      delete event.threadId
 
       await callback(event)
     }
