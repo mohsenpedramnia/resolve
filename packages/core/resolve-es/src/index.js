@@ -36,7 +36,7 @@ const validateEventFilter = filter => {
 
 const loadEvents = async (storage, filter, handler) => {
   validateEventFilter(filter)
-  return await storage.loadEvents(filter, handler)
+  await storage.loadEvents(filter, handler)
 }
 
 const importStream = (storage, ...args) => {
