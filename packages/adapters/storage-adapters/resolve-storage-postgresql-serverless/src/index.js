@@ -17,6 +17,7 @@ import paginateEvents from './paginate-events'
 import coercer from './coercer'
 import escapeId from './escape-id'
 import escape from './escape'
+import getNextCursor from './get-next-cursor'
 
 import _createResource from './resource/create'
 import _disposeResource from './resource/dispose'
@@ -39,10 +40,12 @@ const createAdapter = _createAdapter.bind(null, {
   executeStatement,
   saveEventOnly,
   paginateEvents,
-  coercer
+  coercer,
+  getNextCursor
 })
 
 export default createAdapter
+export { getNextCursor }
 
 const pool = {
   executeStatement,

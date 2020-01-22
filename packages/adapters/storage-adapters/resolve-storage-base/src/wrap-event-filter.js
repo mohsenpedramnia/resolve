@@ -4,7 +4,7 @@ const wrapEventFilter = loadEvents => async (pool, filter, callback) => {
     throw new Error(`Callback should be function`)
   }
 
-  await loadEvents(pool, filter, callback)
+  return await loadEvents(pool, filter, callback)
 }
 
 export default wrapEventFilter
